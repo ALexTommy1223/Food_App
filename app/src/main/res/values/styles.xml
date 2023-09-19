@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="TextAppearance.Custom">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@color/black</item>
+        <!-- Add any other desired text appearance attributes here -->
+    </style>
+
+
+    <style name="TextAppearance"></style>
+
+
+</resources>
