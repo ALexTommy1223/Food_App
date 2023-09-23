@@ -7,8 +7,8 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="startColor">#144E5A</color>
-    <color name="endColor">#144E5A</color>
+    <color name="startColor">#1FC57A</color>
+    <color name="endColor">#1FC57A</color>
 
     <color name="iconColor"> #FEAD1D</color>
     <color name="textColor">  #6CCB92</color>

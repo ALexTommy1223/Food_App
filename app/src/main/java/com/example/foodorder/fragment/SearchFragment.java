@@ -3,64 +3,106 @@ package com.example.foodorder.fragment;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.SearchView;
 
 import com.example.foodorder.R;
+import com.example.foodorder.adapter.MenuAdapter;
+import com.example.foodorder.databinding.FragmentSearchBinding;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link SearchFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+
 public class SearchFragment extends Fragment {
+    private FragmentSearchBinding binding;
+    private MenuAdapter adapter;
+    private List<String> orignalMenuFoodName = Arrays.asList("Burger", "sandwitch", "momo", "item", "sandwich", "mimo");
+    private List<String> orignalMenuItemPrice = Arrays.asList("$5", "$9", "75", "$45", "$15", "$6");
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    private List<Integer> orignalMenuImage = Arrays.asList(
+            R.drawable.menu1,
+            R.drawable.menu2,
+            R.drawable.menu3,
+            R.drawable.menu4,
+            R.drawable.menu5,
+            R.drawable.menu6
+    );
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+
 
     public SearchFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment SearchFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static SearchFragment newInstance(String param1, String param2) {
-        SearchFragment fragment = new SearchFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
+    private ArrayList<String> filteredMenuFoodName=new ArrayList<>();
+    private ArrayList<String> filteredMenuItemPrice=new ArrayList<>();
+    private ArrayList<Integer> filteredMenuImage=new ArrayList<>();
 
-    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_search, container, false);
+        binding=FragmentSearchBinding.inflate(inflater,container,false);
+        adapter=new MenuAdapter(filteredMenuFoodName,filteredMenuItemPrice,filteredMenuImage);
+        binding.menuRecylerView.setLayoutManager(new LinearLayoutManager(requireContext()));
+        binding.menuRecylerView.setAdapter(adapter);
+
+        setupSearchView();
+        showAllMenu();
+        return binding.getRoot();
+    }
+
+    private void showAllMenu() {
+        filteredMenuFoodName.clear();
+        filteredMenuItemPrice.clear();
+        filteredMenuImage.clear();
+
+        filteredMenuFoodName.addAll(orignalMenuFoodName);
+        filteredMenuItemPrice.addAll(orignalMenuItemPrice);
+        filteredMenuImage.addAll(orignalMenuImage);
+
+        adapter.notifyDataSetChanged();
+    }
+
+    private void setupSearchView() {
+        binding.searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                filterMenuItems(query);
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                filterMenuItems(newText);
+                return true;
+            }
+        });
+    }
+
+    private void filterMenuItems(String query) {
+        filteredMenuFoodName.clear();
+        filteredMenuItemPrice.clear();
+        filteredMenuImage.clear();
+
+        for (int index=0;index<orignalMenuFoodName.size();index++){
+            String foodName=orignalMenuFoodName.get(index);
+            if(foodName.toLowerCase().contains(query.toLowerCase())){
+                filteredMenuFoodName.add(foodName);
+                filteredMenuItemPrice.add(orignalMenuItemPrice.get(index));
+                filteredMenuImage.add(orignalMenuImage.get(index));
+            }
+        }
+        adapter.notifyDataSetChanged();
     }
 }

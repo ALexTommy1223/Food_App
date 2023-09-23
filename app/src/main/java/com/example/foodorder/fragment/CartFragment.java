@@ -3,64 +3,67 @@ package com.example.foodorder.fragment;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.foodorder.R;
+import com.example.foodorder.adapter.CartItemsAdapter;
+import com.example.foodorder.databinding.FragmentCartBinding;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link CartFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+
 public class CartFragment extends Fragment {
+    private static FragmentCartBinding binding;
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
 
     public CartFragment() {
-        // Required empty public constructor
+
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment CartFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static CartFragment newInstance(String param1, String param2) {
-        CartFragment fragment = new CartFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_cart, container, false);
+        binding = FragmentCartBinding.inflate(inflater, container, false);
+
+        ArrayList<String> cartFoodName = new ArrayList<>();
+        cartFoodName.add("Burger");
+        cartFoodName.add("sandwich");
+        cartFoodName.add("momo");
+        cartFoodName.add("item");
+        cartFoodName.add("sandwich");
+
+        ArrayList<String> cartItemPrice = new ArrayList<>();
+        cartItemPrice.add("$7");
+        cartItemPrice.add("$8");
+        cartItemPrice.add("$12");
+        cartItemPrice.add("$9");
+        cartItemPrice.add("$17");
+
+        ArrayList<Integer> cartImage = new ArrayList<>();
+        cartImage.add(R.drawable.menu1);
+        cartImage.add(R.drawable.menu2);
+        cartImage.add(R.drawable.menu3);
+        cartImage.add(R.drawable.menu4);
+        cartImage.add(R.drawable.menu5);
+
+        CartItemsAdapter adapter = new CartItemsAdapter(cartFoodName, cartItemPrice, cartImage);
+        binding.cartRec.setLayoutManager(new LinearLayoutManager(requireContext()));
+        binding.cartRec.setAdapter(adapter);
+
+        return binding.getRoot();
     }
 }

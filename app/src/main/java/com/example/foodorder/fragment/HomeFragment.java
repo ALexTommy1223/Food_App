@@ -5,6 +5,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,9 +15,12 @@ import com.denzcoskun.imageslider.ImageSlider;
 import com.denzcoskun.imageslider.constants.ScaleTypes;
 import com.denzcoskun.imageslider.models.SlideModel;
 import com.example.foodorder.R;
+import com.example.foodorder.adapter.PopularAdapter;
 import com.example.foodorder.databinding.FragmentHomeBinding;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 
 public class HomeFragment extends Fragment {
@@ -33,6 +37,13 @@ public class HomeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding=FragmentHomeBinding.inflate(inflater, container, false);
+        binding.viewallMenu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                MenuBootomSheetFragment bootomSheetFragment=new MenuBootomSheetFragment();
+                bootomSheetFragment.show(getParentFragmentManager(),"Test");
+            }
+        });
         return binding.getRoot();
     }
 
@@ -47,5 +58,14 @@ public class HomeFragment extends Fragment {
         ImageSlider imageSlider=binding.imageSlider;
         imageSlider.setImageList(imageList);
         imageSlider.setImageList(imageList,ScaleTypes.FIT);
+
+        List<String> foodName= Arrays.asList("Burger","sandwich","momo","item");
+        List<String> price=Arrays.asList("$5","$7","$8","$10");
+        List<Integer> populerFoodImages=Arrays.asList(R.drawable.menu1,
+                R.drawable.menu2, R.drawable.menu3,R.drawable.menu4
+                );
+        PopularAdapter adapter=new PopularAdapter(foodName,price,populerFoodImages,requireContext());
+        binding.popularRec.setLayoutManager(new LinearLayoutManager(requireContext()));
+        binding.popularRec.setAdapter(adapter);
     }
 }
